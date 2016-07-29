@@ -91,26 +91,20 @@ class Solution(object):
         """
         if n==1 or n==2:
             return n
-        return Solution().climbStairs(n-1)+Solution().climbStairs(n-2)      
-         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        return Solution().climbStairs(n-1)+Solution().climbStairs(n-2)
+    def guessNumber(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        u=n
+        l=1
+        z=(u+l)/2
+        while(abs(guess(z))):
+            if guess(z)==-1:
+                z=(u+z)/2
+                l=z
+            elif guess(z)==1：
+                z=(l+z)/2
+                u=z
+        return z
