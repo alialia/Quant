@@ -4,7 +4,6 @@
 # @Site    :
 # @File    : BS.py
 # @Software: PyCharm
-from __future__ import division
 from scipy.stats import norm
 N = norm.cdf
 n = norm.pdf
@@ -25,7 +24,7 @@ class BS(object):
         elif self.option_type=='P':
             return self.K * np.exp(-self.r * self.T) * N(-self.d2) - self.S * np.exp(-self.q * self.T) * N(-self.d1)
         else:
-            print 'option type is not included'
+            print('option type is not included')
             return 0
     def Vega(self):
         return self.S * self.T_sqrt*n(self.d1)
@@ -36,13 +35,13 @@ class BS(object):
         elif self.option_type == 'P':
             return -N(-self.d1)
         else:
-            print 'option type is not included'
+            print('option type is not included')
             return 0
     def Gamma(self):
         if self.option_type == 'C' or self.option_type == 'P':
             return n(self.d1)/(self.S*self.sigma*self.T_sqrt)
         else:
-            print 'option type is not included'
+            print('option type is not included')
             return 0
 
     def Theta(self):
@@ -51,7 +50,7 @@ class BS(object):
         elif self.option_type == 'P':
             return -(self.S * self.sigma * n(self.d1)) / (2 * self.T_sqrt) + self.r * self.K * np.exp(-self.r * self.T) * N(-self.d2)
         else:
-            print 'option type is not included'
+            print('option type is not included')
             return 0
     def Rho(self):
         if self.option_type == 'C':
@@ -59,7 +58,7 @@ class BS(object):
         elif self.option_type == 'P':
             return -self.K * self.T * np.exp(-self.r * self.T) * N(-self.d2)
         else:
-            print 'option type is not included'
+            print('option type is not included')
             return 0
 class  Implied_vol(object):
     def __init__(self,option_type, S, K, T, r, q):
@@ -69,7 +68,7 @@ class  Implied_vol(object):
         self.T_sqrt = np.sqrt(T)
     def implied_vol(self,option_price,precision = 1.0e-5,max_iteration = 100):
         self.sigma = 0.1
-        for i in xrange(max_iteration):
+        for i in range(max_iteration):
             self.d1 =  (np.log(self.S / self.K) + ((self.r - self.q) + self.sigma ** 2 / 2) * self.T) / (self.sigma * self.T_sqrt)
             self.d2 = self.d1 - self.sigma * self.T_sqrt
             price = self.BSM()
@@ -80,7 +79,7 @@ class  Implied_vol(object):
             vega = self.Vega()
             self.sigma = self.sigma + diff/vega # f(x) / f'(x)
         # value wasn't found, return best guess so far
-        print 'max_iteration exceeds, defaut max_iteration is 100'
+        print('max_iteration exceeds, defaut max_iteration is 100')
         return self.sigma
     def BSM(self):
 
@@ -89,13 +88,13 @@ class  Implied_vol(object):
         elif self.option_type=='P':
             return self.K * np.exp(-self.r * self.T) * N(-self.d2) - self.S * np.exp(-self.q * self.T) * N(-self.d1)
         else:
-            print 'option type is not included'
+            print('option type is not included')
             return 0
     def Vega(self):
         return self.S * self.T_sqrt * n(self.d1)
 from time import time
 t0=time()
-for i in xrange(1000):
+for i in range(1000):
     bs = BS('C',50,65,1,0.03,0.15, 0.02)
     bs.Delta()
     bs.Gamma()
@@ -107,9 +106,9 @@ for i in xrange(1000):
     a = Implied_vol('C',50,65,1,0.03,0.02)
     a.implied_vol(0.158842128257)
 # print bs.BSM()
-print time()-t0
+print(time()-t0)
 a = Implied_vol('C',50,65,1,0.03,0.02)
-print a.implied_vol(0.158842128257)
+print(a.implied_vol(0.158842128257))
 # a = np.ones(10000)*10
 # b = np.ones(10000)
 # t1=time()
