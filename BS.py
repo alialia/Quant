@@ -9,6 +9,7 @@ N = norm.cdf
 n = norm.pdf
 import numpy as np
 
+    
 def monte_carlo_option_pricing(S0, K, T, r, sigma, M, option_type='call', notional=1.0):
     """
     Monte Carlo simulation to price a European option (without intermediate dates).
@@ -116,9 +117,14 @@ def BSMAnalytical(option_type, S, K, T, r, sigma, q=0.0):
         # 如果期权类型不正确，则输出错误信息并返回0
         print('option type is not included')
         return 0
-def BS_vega(cp_flag,S,K,T,r,sigma,q=0.0):
-    d1 = (np.log(S/K)+(r-q+sigma ** 2/2.0)*T)/(sigma*np.sqrt(T))
-    return S * np.sqrt(T)*n(d1)
+def BS_vega(option_type, S, K, T, r, sigma, q=0.0):
+    d1 = (np.log(S / K) + (r - q + sigma ** 2 / 2.0) * T) / (sigma * np.sqrt(T))
+    if option_type in ['C', 'P']:
+        return S * np.sqrt(T) * n(d1)
+    elif option_type in ['DC', 'DP']:
+        return np.exp(-r * T) * np.sqrt(T) * n(d1)
+    else:
+        raise ValueError("option_type must be one of 'C', 'P', 'DC', or 'DP'")
 def implied_vol(option_price, option_type, S, K, T, r,q=0,precision = 1.0e-5,max_iteration = 100):
     sigma = 0.1
     for i in range(0, max_iteration):
